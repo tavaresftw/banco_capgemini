@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use app\Transactions;
-use app\Accounts;
+use App\BusinessLogic\TransactionsBusinessLogic;
 
 class AccountsController extends Controller
 {
@@ -16,11 +16,10 @@ class AccountsController extends Controller
 
     }
 
-    public function getAccountByNumber(Request $request)
+    public function getAccountByNumber($accountNumber,Request $request)
     {
-        $json = json_decode($request->json()->all());
-        $account = new Accounts;
-        $acc = $account->getAccount($json->accountNumber);
+        $transactions = new TransactionsBusinessLogic;
+        $acc = $transactions->balance($accountNumber);
         
         if ($acc == null) {
             

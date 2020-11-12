@@ -17,7 +17,7 @@ class Accounts extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('account_number')->unique();
-            $table->decimal('balance', 10,2);
+            $table->decimal('balance', 10,2)->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

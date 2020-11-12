@@ -32,3 +32,16 @@ Route::group([
         Route::post('me', 'AuthController@me');
 
 });
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'account'
+
+], function ($router){
+
+    Route::get('balance/{accountNumber}', 'AccountsController@getAccountByNumber');
+    Route::post('deposit/{accountNumber}','TransactionsController@deposit');
+    Route::post('withdraw/{accountNumber}','TransactionsController@withdraw');
+
+
+});

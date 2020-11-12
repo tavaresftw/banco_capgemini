@@ -4,20 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use \App\Transactions;
-
 class Accounts extends Model
 {
     
-    public function getAccount($accountNumber)
+    public function transactions()
     {
 
-        $conta = $this->select()->where('account_number', $accountNumber)->get();
-        if (empty($contas)){
-            return null;
-        }
-        else return $conta;
+        return $this->hasMany(Transactions::class,'account_id','id');
+        
     }
-
-
 }

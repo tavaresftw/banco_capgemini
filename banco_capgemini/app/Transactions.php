@@ -18,51 +18,11 @@ class Transactions extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function transactions()
+    public function accounts()
     {
 
-        return $this->hasMany(Transactions::class);
-    }
-    
-    public function depositValue($valor, $tipo)
-    {
-        $transactions = new Transactions;
-        
-        if ($valor <= 0) {
-            return false;
-        } else {
+        return $this->belongsTo(Accounts::class);
 
-            $transactions->value = $valor;
-            $transactions->type = $tipo;
-            
-            $this->balance = $valor + $this->balance;
-            $this->save();
-            $this->transactions()->saveMany([$transactions]);
-            return true;
-        }
-    }
-
-    public function withdrawValue($valor, $tipo)
-    {
-
-        $transactions = new Transactions;
-
-        if ($valor > $this->balance) {
-
-            return false;
-        } else if ($valor <= 2) {
-
-            return false;
-
-        } else {
-            $transactions->value = $valor;
-            $transactions->type = $tipo;
-            
-            $this->balance = $valor + $this->balance;
-            $this->save();
-            $this->transactions()->saveMany([$transactions]);
-            return true;
-        }
     }
 
 

@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Accounts;
 use App\User;
-use App\Transactions;
+use App\BusinessLogic\TransactionsBusinessLogic;
 
 class TransactionsController extends Controller
 {
 
     //deposito
-    public function deposit(Request $request)
+    public function deposit($accountNumber, Request $request)
     {
-        $json = json_decode($request->json()->all());
-        $account = new Accounts;
-        $transactions = new Transactions;
-        $acc = $account->getAccount($json->accountNumber);
+
+        $transactions = new TransactionsBusinessLogic;
+        $acc = $transactions->balance($accountNumber);
+
 
         if($acc == null) {
 
@@ -25,11 +25,11 @@ class TransactionsController extends Controller
             ], 500);
         }
 
-        $bool = $transactions->depositValue($json->value, $json->type);
+        $bool = $transactions->depositValue($request->value,$accountNumber);
 
         if($bool == true){
             return response()->json([
-                'message'   => 'Efetuado deposito de '.$json->value.'!'
+                'message'   => 'Efetuado deposito de '.$request->value.'!'
             ], 200);
         }
         else return response()->json([
@@ -39,22 +39,20 @@ class TransactionsController extends Controller
     }
 
     //saque
-    public function withdraw(Request $request)
+    public function withdraw($accountNumber, Request $request)
     {
-        $json = json_decode($request->json()->all());
-        $account = new Accounts();
-        $transactions = new Transactions;
-        $acc = $account->getAccount($json->accountNumber);
+        $transactions = new TransactionsBusinessLogic;
+        $acc = $transactions->balance($accountNumber);
         if($acc == null) {
 
             return response()->json([
                 'message'   => 'Conta não encontrada',
             ], 500);
-        }else if($json->value <= 2) return response()->json(['message' => 'Valor deve ser superior a R$ 2,00'], 500);
-        $bool = $transactions->withdrawValue($json->value, $json->type);
+        }
+        $bool = $transactions->withdrawValue($request->value,$accountNumber);
 
         if ($bool == true){
-            return response()->json(['message' => 'Efetuado saque de '.$json->value.' '], 200);
+            return response()->json(['message' => 'Efetuado saque de '.$request->value.' '], 200);
         }  
         else{
             
