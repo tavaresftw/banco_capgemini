@@ -36,7 +36,7 @@ class TransactionsBusinessLogic
         $transactions = new Transactions;
         $conta        = Accounts::select()->where('account_number', $accountNumber)->first();
         
-        if ($valor > $conta->balance) {
+        if ($valor > $conta->balance || $valor <= 0) {
 
             return false;
 
@@ -55,7 +55,7 @@ class TransactionsBusinessLogic
     //saldo
     public function balance($accountNumber){
     
-        $conta = Accounts::where('account_number', $accountNumber)->get();
+        $conta = Accounts::where('account_number', $accountNumber)->first();
         if (empty($conta)){
             return null;
         }

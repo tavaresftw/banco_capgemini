@@ -13,4 +13,10 @@ class Accounts extends Model
         return $this->hasMany(Transactions::class,'account_id','id');
         
     }
+
+    public function user(){
+
+        return $this->belongsTo(User::class);
+
+    }
 }

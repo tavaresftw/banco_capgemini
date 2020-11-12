@@ -42,6 +42,6 @@ Route::group([
     Route::get('balance/{accountNumber}', 'AccountsController@getAccountByNumber');
     Route::post('deposit/{accountNumber}','TransactionsController@deposit');
     Route::post('withdraw/{accountNumber}','TransactionsController@withdraw');
-
+    Route::get('list','AccountsController@getAccounts');
 
 });
